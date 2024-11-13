@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sols RNG Rolling Simulator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding-top: 20px; }
+        h1 { color: #333; }
+        .container { max-width: 600px; margin: auto; }
+        .luck-multiplier { margin-bottom: 15px; }
+        .roll-result { font-size: 1.5em; color: #0066cc; margin-top: 20px; }
+        .btn { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 1em; }
+        .btn:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>Sols RNG Rolling Simulator</h1>
+    <p>Your dream auras right at your fingertips!</p>
+
+    <div class="container">
+        <div class="luck-multiplier">
+            <label for="luckMultiplier">Luck Multiplier: </label>
+            <input type="number" id="luckMultiplier" value="1" min="1" step="0.1">
+        </div>
+        <button class="btn" onclick="rollAura()">Roll</button>
+        <div class="roll-result" id="rollResult"></div>
+    </div>
+
+    <script>
+        // Define the auras and their base probabilities
+        const auras = [
+            { name: "Common", chance: 1 / 2 },
+            { name: "Uncommon", chance: 1 / 4 },
+            { name: "Good", chance: 1 / 5 },
+            { name: "Natural", chance: 1 / 8 },
+            { name: "Rare", chance: 1 / 16 },
+            { name: "Divinus", chance: 1 / 32 },
+            { name: "Crystallized", chance: 1 / 64 },
+            { name: "Rage", chance: 1 / 128 },
+            { name: "Topaz", chance: 1 / 150 },
+            { name: "Glacier", chance: 1 / 256 },
+            { name: "Wind", chance: 1 / 300 },
+            { name: "Ruby", chance: 1 / 350 },
+            { name: "Forbidden", chance: 1 / 404 },
+            { name: "Gilded", chance: 1 / 512 },
+            { name: "Ink", chance: 1 / 700 },
+            { name: "Jackpot", chance: 1 / 777 },
+            { name: "Diaboli", chance: 1 / 1004 },
+            { name: "Precious", chance: 1 / 1024 },
+            { name: "Undefined", chance: 1 / 1111 },
+            { name: "Glock", chance: 1 / 1700 },
+            { name: "Magnetic", chance: 1 / 2048 },
+            { name: "Sidereum", chance: 1 / 4096 },
+            { name: "Bleeding", chance: 1 / 4444 },
+            { name: "Lunar", chance: 1 / 5000 },
+            { name: "Solar", chance: 1 / 5000 },
+            { name: "Flushed", chance: 1 / 6900 },
+            { name: "Hazard", chance: 1 / 7000 },
+            { name: "Quartz", chance: 1 / 8192 },
+            { name: "Undead", chance: 1 / 10000 },
+            { name: "Corrosive", chance: 1 / 12000 },
+            { name: "Comet", chance: 1 / 12000 },
+            { name: "Rage: Heated", chance: 1 / 12800 },
+            { name: "Ink Leak", chance: 1 / 14000 },
+            { name: "Powered", chance: 1 / 16000 },
+            { name: "Permafrost", chance: 1 / 24500 },
+            { name: "Stormal", chance: 1 / 30000 },
+            { name: "Aquatic", chance: 1 / 40000 },
+            { name: "Flushed: Lobotomy", chance: 1 / 69000 },
+            { name: "Hazar Rays", chance: 1 / 70000 },
+            { name: "Nautilus", chance: 1 / 70000 },
+            { name: "Exotic", chance: 1 / 99999 },
+            { name: "Undead: Devil", chance: 1 / 100000 },
+            { name: "Diaboli: Void", chance: 1 / 100000 },
+            { name: "Jade", chance: 1 / 125000 },
+            { name: "Bounded", chance: 1 / 200000 },
+            { name: "Celestial", chance: 1 / 350000 },
+            { name: "Galaxy", chance: 1 / 500000 },
+            { name: "Lunar: Full Moon", chance: 1 / 500000 },
+            { name: "Twilight", chance: 1 / 600000 },
+            { name: "Kyawthuite", chance: 1 / 850000 },
+            { name: "Arcane", chance: 1 / 1000000 },
+            { name: "Starscourage", chance: 1 / 1000000 },
+            { name: "Magnetic Reverse Polarity", chance: 1 / 1024000 },
+            { name: "Astral", chance: 1 / 1336000 },
+            { name: "Gravitational", chance: 1 / 2000000 },
+            { name: "Virtual", chance: 1 / 2500000 },
+            { name: "Sailor", chance: 1 / 3000000 },
+            { name: "Poseidon", chance: 1 / 3800000 },
+            { name: "Aquatic: Flame", chance: 1 / 4000000 },
+            { name: "Solar Soltice", chance: 1 / 5000000 },
+            { name: "Hades", chance: 1 / 6666666 },
+            { name: "Hyper Volt", chance: 1 / 7500000 },
+            { name: "Glitch", chance: 1 / 12210000 },
+            { name: "Arcane: Legacy", chance: 1 / 15000000 },
+            { name: "Chromatic", chance: 1 / 20000000 },
+            { name: "Arcane: Dark", chance: 1 / 30000000 },
+            { name: "Exotic: Apex", chance: 1 / 49999500 },
+            { name: "Matrix", chance: 1 / 50000000 },
+            { name: "Chromatic: Genesis", chance: 1 / 99999999 },
+            { name: "Starscourage: Radiant", chance: 1 / 100000000 },
+            { name: "Abyssal Hunter", chance: 1 / 100000000 },
+            { name: "Overture", chance: 1 / 150000000 },
+            { name: "Impeached", chance: 1 / 200000000 },
+            { name: "Archangel", chance: 1 / 250000000 },
+            { name: "Overture: History", chance: 1 / 300000000 },
+            { name: "Bloodlust", chance: 1 / 300000000 },
+            { name: "Gargantua", chance: 1 / 430000000 },
+            { name: "Oppression", chance: 1 / 600000000000 },
+            { name: "Unobtainable", chance: 1 / 1000000000 } // Placeholder for unobtainable auras
+        ];
+
+        function rollAura() {
+            // Get the luck multiplier input
+            const luckMultiplier = parseFloat(document.getElementById('luckMultiplier').value) || 1;
+            
+            // Calculate weighted chances with the multiplier
+            let totalWeight = 0;
+            const weightedAuras = auras.map(aura => {
+                const weight = aura.chance * luckMultiplier;
+                totalWeight += weight;
+                return { ...aura, weight };
+            });
+
+            // Roll a random number between 0 and totalWeight
+            const roll = Math.random() * totalWeight;
+            let cumulativeWeight = 0;
+
+            // Determine the aura based on the roll
+            for (const aura of weightedAuras) {
+                cumulativeWeight += aura.weight;
+                if (roll < cumulativeWeight) {
+                    document.getElementById('rollResult').innerText = `You rolled: ${aura.name}`;
+                    return;
+                }
+            }
+
+            document.getElementById('rollResult').innerText = "No aura obtained.";
+        }
+    </script>
+</body>
+</html>
