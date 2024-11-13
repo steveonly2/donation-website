@@ -23,7 +23,7 @@
     <div class="container">
         <div class="luck-multiplier">
             <label for="luckMultiplier">Luck Multiplier: </label>
-            <input type="number" id="luckMultiplier" value="1" min="1" step="0.1">
+            <input type="number" id="luckMultiplier" value="1" min="0.1" step="0.1">
         </div>
         <button class="btn" onclick="rollAura()">Roll</button>
         <div class="roll-result" id="rollResult"></div>
@@ -34,39 +34,39 @@
 
     <script>
         const auras = [
-            { name: "Common", chance: 1 / 2 },
-            { name: "Uncommon", chance: 1 / 4 },
-            { name: "Good", chance: 1 / 5 },
-            { name: "Natural", chance: 1 / 8 },
-            { name: "Rare", chance: 1 / 16 },
-            { name: "Topaz", chance: 1 / 150 },
-            { name: "Glacier", chance: 1 / 256 },
-            { name: "Gilded", chance: 1 / 512 },
-            { name: "Ink", chance: 1 / 700 },
-            { name: "Jackpot", chance: 1 / 777 },
-            { name: "Diaboli", chance: 1 / 1004 },
-            { name: "Precious", chance: 1 / 1024 },
-            { name: "Undefined", chance: 1 / 1111 },
-            { name: "Glock", chance: 1 / 1700 },
-            { name: "Bleeding", chance: 1 / 4444 },
-            { name: "Undead", chance: 1 / 10000 },
-            { name: "Corrosive", chance: 1 / 12000 },
-            { name: "Comet", chance: 1 / 12000 },
-            { name: "Flushed: Lobotomy", chance: 1 / 69000 },
-            { name: "Exotic", chance: 1 / 99999 },
-            { name: "Galaxy", chance: 1 / 500000 },
-            { name: "Twilight", chance: 1 / 600000 },
-            { name: "Arcane", chance: 1 / 1000000 },
-            { name: "Starscourage", chance: 1 / 1000000 },
-            { name: "Magnetic Reverse Polarity", chance: 1 / 1024000 },
-            { name: "Astral", chance: 1 / 1336000 },
-            { name: "Virtual", chance: 1 / 2500000 },
-            { name: "Arcane: Legacy", chance: 1 / 15000000 },
-            { name: "Starscourage: Radiant", chance: 1 / 100000000 },
-            { name: "Overture", chance: 1 / 150000000 },
-            { name: "Archangel", chance: 1 / 250000000 },
-            { name: "Oppression", chance: 1 / 600000000000 },
-            { name: "Unobtainable", chance: 1 / 1000000000 } // Placeholder for unobtainable auras
+            { name: "Common", chance: 0.5 },
+            { name: "Uncommon", chance: 0.25 },
+            { name: "Good", chance: 0.2 },
+            { name: "Natural", chance: 0.125 },
+            { name: "Rare", chance: 0.0625 },
+            { name: "Topaz", chance: 0.0067 },
+            { name: "Glacier", chance: 0.0039 },
+            { name: "Gilded", chance: 0.00195 },
+            { name: "Ink", chance: 0.00143 },
+            { name: "Jackpot", chance: 0.00129 },
+            { name: "Diaboli", chance: 0.000996 },
+            { name: "Precious", chance: 0.000976 },
+            { name: "Undefined", chance: 0.0009 },
+            { name: "Glock", chance: 0.000588 },
+            { name: "Bleeding", chance: 0.000225 },
+            { name: "Undead", chance: 0.0001 },
+            { name: "Corrosive", chance: 0.0000833 },
+            { name: "Comet", chance: 0.0000833 },
+            { name: "Flushed: Lobotomy", chance: 0.0000145 },
+            { name: "Exotic", chance: 0.00001 },
+            { name: "Galaxy", chance: 0.000002 },
+            { name: "Twilight", chance: 0.00000167 },
+            { name: "Arcane", chance: 0.000001 },
+            { name: "Starscourage", chance: 0.000001 },
+            { name: "Magnetic Reverse Polarity", chance: 0.000000976 },
+            { name: "Astral", chance: 0.000000748 },
+            { name: "Virtual", chance: 0.0000004 },
+            { name: "Arcane: Legacy", chance: 0.000000067 },
+            { name: "Starscourage: Radiant", chance: 0.00000001 },
+            { name: "Overture", chance: 0.0000000067 },
+            { name: "Archangel", chance: 0.000000004 },
+            { name: "Oppression", chance: 0.00000000000167 },
+            { name: "Unobtainable", chance: 0.000000001 } // Placeholder for unobtainable auras
         ];
 
         function rollAura() {
