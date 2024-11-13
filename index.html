@@ -72,18 +72,22 @@
         function rollAura() {
             const luckMultiplier = parseFloat(document.getElementById('luckMultiplier').value) || 1;
             let totalWeight = 0;
+
+            // Adjust aura chances based on the luck multiplier
             const weightedAuras = auras.map(aura => {
-                const weight = aura.chance * luckMultiplier;
-                totalWeight += weight;
-                return { ...aura, weight };
+                const adjustedChance = aura.chance * luckMultiplier;
+                totalWeight += adjustedChance;
+                return { ...aura, adjustedChance };
             });
 
+            // Generate a random roll between 0 and totalWeight
             const roll = Math.random() * totalWeight;
             let cumulativeWeight = 0;
             let selectedAura = "No aura obtained";
 
+            // Determine the rolled aura based on the adjusted chances
             for (const aura of weightedAuras) {
-                cumulativeWeight += aura.weight;
+                cumulativeWeight += aura.adjustedChance;
                 if (roll < cumulativeWeight) {
                     selectedAura = aura.name;
                     break;
@@ -93,6 +97,7 @@
             document.getElementById('rollResult').innerText = `You rolled: ${selectedAura}`;
             saveRoll(selectedAura);
 
+            // Show cutscene if the rolled aura is of high tier
             if (isHighTierAura(selectedAura)) {
                 showCutscene();
             }
